@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내 주인님의 주인님 - SSIN</title>
+    <style>
+        /* Base & Reset */
+        :root {
+            --brand-color: #6366F1;
+            --brand-light: #EEF2FF;
+            --bg-color: #FFFFFF;
+            --surface-color: #F8F9FA;
+            --text-main: #111111;
+            --text-sub: #777777;
+            --border-color: #EAEAEA;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.5;
+            padding-bottom: 80px; /* 하단 BGM 바가 콘텐츠를 가리지 않도록 여백 추가 */
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* Header */
+        header {
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+        }
+
+        .header-inner {
+            max-width: 800px; 
+            margin: 0 auto;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--brand-color);
+            letter-spacing: -1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        /* Main Content Container */
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--bg-color);
+            min-height: 100vh;
+            border-left: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+        }
+
+        /* Top Work Info Section */
+        .work-cover {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .work-info {
+            padding: 30px 20px;
+            border-bottom: 8px solid var(--surface-color);
+        }
+
+        .work-genre {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--brand-color);
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .work-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .work-author {
+            font-size: 14px;
+            color: var(--text-sub);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 24px;
+        }
+
+        .tags span {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--brand-color);
+            background: var(--brand-light);
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+
+        /* 임팩트 짧은 소개 */
+        .work-desc {
+            font-size: 15px;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            background-color: var(--surface-color);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center; 
+            word-break: keep-all;
+        }
+
+        /* 테마곡 링크 버튼 (유튜브 이동용) */
+        .theme-link-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--brand-color);
+            background-color: var(--brand-light);
+            padding: 10px 20px;
+            border-radius: 30px;
+            margin-bottom: 24px;
+            transition: all 0.2s ease;
+            width: 100%;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .theme-link-btn:hover {
+            background-color: var(--brand-color);
+            color: white;
+            border-color: var(--brand-color);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px 0;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #4F46E5;
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--surface-color);
+        }
+
+        /* 관심 버튼 (하트 토글) */
+        .btn-secondary.liked {
+            border-color: var(--brand-color);
+            color: var(--brand-color);
+            background-color: var(--brand-light);
+        }
+
+        #heartIcon {
+            font-size: 18px;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .btn-secondary.liked #heartIcon {
+            transform: scale(1.2);
+            color: var(--brand-color);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 60px;
+            background: white;
+            z-index: 90;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 16px 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .tab.active {
+            color: var(--text-main);
+            border-bottom: 3px solid var(--text-main);
+        }
+
+        /* 탭 콘텐츠 영역 */
+        .tab-content {
+            display: none; 
+        }
+        
+        .tab-content.active {
+            display: block; 
+        }
+
+        /* 공지사항 배너 */
+        .notice-banner {
+            padding: 14px 20px;
+            background-color: #F8FAFC;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .notice-badge {
+            background-color: #64748B;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* Episode List */
+        .episode-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .episode-item {
+            display: flex;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .episode-item:hover {
+            background-color: var(--surface-color);
+        }
+
+        .ep-thumbnail {
+            width: 120px;
+            height: 80px;
+            border-radius: 6px;
+            overflow: hidden;
+            background-color: #EFEFEF;
+            margin-right: 16px;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .ep-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 20%;
+        }
+
+        .ep-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .ep-title {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .ep-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ep-date {
+            font-size: 13px;
+            color: var(--text-sub);
+        }
+
+        /* 크래커 디자인 */
+        .ep-price {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #B45309;
+            background-color: #FEF3C7;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .ep-status {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--brand-color);
+            border: 1px solid var(--brand-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 6px;
+            width: fit-content;
+        }
+
+        /* 작품소개 상세 탭 디자인 */
+        .detail-info {
+            padding: 30px 20px;
+        }
+
+        .detail-info h3 {
+            font-size: 18px;
+            margin: 32px 0 16px;
+            border-bottom: 2px solid var(--brand-color); 
+            padding-bottom: 8px;
+            display: inline-block;
+            color: var(--text-main);
+        }
+        
+        .detail-info h3:first-child {
+            margin-top: 0;
+        }
+
+        .detail-info h4 {
+            font-size: 16px;
+            color: var(--text-main);
+            margin: 20px 0 10px;
+            font-weight: 800;
+        }
+
+        .detail-info p {
+            font-size: 15px;
+            color: #444;
+            line-height: 1.7;
+            margin-bottom: 16px;
+            word-break: keep-all;
+        }
+
+        .info-list {
+            margin-bottom: 24px;
+        }
+
+        .info-list li {
+            font-size: 14px;
+            color: #444;
+            line-height: 1.6;
+            margin-bottom: 8px;
+            padding-left: 14px;
+            position: relative;
+            word-break: keep-all;
+        }
+
+        .info-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--brand-color);
+            font-weight: bold;
+        }
+
+        /* 캐릭터 카드 & 프로필 이미지 디자인 */
+        .character-card {
+            background-color: var(--surface-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .character-card h4 {
+            margin-top: 0;
+            color: var(--brand-color);
+            border-bottom: 1px dashed #D1D5DB;
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+
+        .character-profile {
+            display: flex;
+            gap: 16px;
+        }
+
+        /* 캐릭터 이미지 클릭 유도를 위한 마우스 오버 효과 추가 */
+        .character-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center 20%;
+            flex-shrink: 0;
+            border: 2px solid var(--border-color);
+            background-color: var(--bg-color);
+            cursor: zoom-in;
+            transition: all 0.2s ease;
+        }
+
+        .character-img:hover {
+            opacity: 0.8;
+            border-color: var(--brand-color);
+            transform: scale(1.05);
+        }
+
+        .character-details {
+            flex: 1;
+        }
+        
+        .character-card .info-list {
+            margin-bottom: 0;
+        }
+
+        /* 이미지 확대 모달(팝업) 디자인 */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 9999; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.85); 
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 90%;
+            max-width: 500px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+            animation: zoom 0.3s ease;
+            object-fit: contain;
+        }
+
+        @keyframes zoom {
+            from {transform: translate(-50%, -50%) scale(0.9); opacity: 0;} 
+            to {transform: translate(-50%, -50%) scale(1); opacity: 1;}
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #ffffff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-modal:hover {
+            color: var(--brand-color);
+        }
+
+        /* 최하단 BGM 플로팅 플레이어 바 */
+        .floating-bgm-bar {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 92%;
+            max-width: 450px;
+            background-color: rgba(30, 30, 30, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 9999;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .bgm-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bgm-icon {
+            width: 36px;
+            height: 36px;
+            background-color: var(--brand-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .bgm-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bgm-title {
+            color: white;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .bgm-artist {
+            color: #AAAAAA;
+            font-size: 11px;
+            margin-top: 2px;
+        }
+
+        /* 자체 재생 버튼 스타일 */
+        .bgm-play-btn {
+            background-color: white;
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 800;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .bgm-play-btn:hover {
+            opacity: 0.8;
+            color: var(--brand-color);
+        }
+
+        /* 반응형 */
+        @media (max-width: 600px) {
+            main { border: none; }
+            .ep-thumbnail { width: 100px; height: 66px; }
+            .character-profile { flex-direction: column; align-items: center; text-align: center; }
+            .character-card .info-list li { text-align: left; }
+            .close-modal { right: 20px; top: 10px; }
+            .floating-bgm-bar { bottom: 16px; padding: 10px 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-inner">
+            <a href="#" class="logo">SSIN</a>
+            <ul class="nav-links">
+                <li><a href="#">검색</a></li>
+                <li><a href="#">보관함</a></li>
+                <li><a href="#">MY</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <!-- 상단 작품 정보 -->
+        <section class="work-header">
+            <img src="https://and.ssina.uk/M1.gif" alt="내 주인님의 주인님" class="work-cover">
+            
+            <div class="work-info">
+                <div class="work-genre">현대 • BDSM • 피폐물</div>
+                <h1 class="work-title">내 주인님의 주인님</h1>
+                <p class="work-author">천해일 x 이영태</p>
+                
+                <div class="tags">
+                    <span>#집착광공</span>
+                    <span>#BDSM</span>
+                    <span>#능력수</span>
+                    <span>#계략수</span>
+                    <span>#피폐물</span>
+                    <span>#애증</span>
+                </div>
+                
+                <!-- 임팩트 있는 짧은 소개 -->
+                <div class="work-desc">
+                    <strong>“그가 만든 세계에서, 오직 너만이 나의 주인이다.”</strong><br><br>
+                    벗어날 수 없는 굴레 속에서 시작된 위험하고도 은밀한 관계.<br>
+                    과연 이 엇갈린 주도권의 끝은 어디일까?
+                </div>
+
+                <!-- 1. 테마곡 링크 버튼 (유튜브 새창 열기 - 유지됨) -->
+                <a href="https://youtu.be/g5vGjuctfjg" target="_blank" class="theme-link-btn">
+                    🎧 BGM : 천해일 테마곡 들으러 가기 (YouTube)
+                </a>
+
+                <div class="action-buttons">
+                    <button id="likeBtn" class="btn btn-secondary" onclick="toggleLike()">
+                        <span id="heartIcon">♡</span> 
+                        <span id="likeCount">관심 12.5만</span>
+                    </button>
+                    <!-- 첫 회 보기 링크 업데이트 -->
+                    <a href="https://share.crack.wrtn.ai/finxz5" target="_blank" class="btn btn-primary">첫 회 보기</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 탭 메뉴 -->
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('episodes')">회차 (6)</div>
+            <div class="tab" onclick="switchTab('info')">작품소개</div>
+        </div>
+
+        <!-- 1. 회차 탭 콘텐츠 -->
+        <div id="episodesContent" class="tab-content active">
+            
+            <div class="notice-banner">
+                <span class="notice-badge">공지</span>
+                [연재주기] 매주 제작자가 내킬 때 정식 연재됩니다.
+            </div>
+
+            <div class="episode-list">
+                <!-- 1화 링크 업데이트 -->
+                <a href="https://share.crack.wrtn.ai/finxz5" target="_blank" class="episode-item">
+                    <div class="ep-thumbnail">
+                        <div class="ep-status">무료</div>
+                        <img src="https://b2m.ssina.uk/a1.webp" alt="1화 썸네일">
+                    </div>
+                    <div class="ep-info">
+                        <div class="ep-title">1화. 엇갈린 시선</div>
+                        <div class="ep-meta">
+                            <span class="ep-date">2026.06.30</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 2화 -->
+                <a href="https://share.crack.wrtn.ai/98rqzv" target="_blank" class="episode-item">
+                    <div class="ep-thumbnail">
+                        <img src="https://b2m.ssina.uk/b2.webp" alt="2화 썸네일">
+                    </div>
+                    <div class="ep-info">
+                        <div class="ep-title">2화. 처음 느끼는 감정</div>
+                        <div class="ep-meta">
+                            <span class="ep-date">2026.07.07</span>
+                            <span class="ep-price">🍪 3 크래커</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 3화 -->
+                <a href="https://share.crack.wrtn.ai/98rqzv" target="_blank" class="episode-item">
+                    <div class="ep-thumbnail">
+                        <img src="https://b2m.ssina.uk/a8.webp" alt="3화 썸네일">
+                    </div>
+                    <div class="ep-info">
+                        <div class="ep-title">3화. 복종의 의미</div>
+                        <div class="ep-meta">
+                            <span class="ep-date">2026.07.14</span>
+                            <span class="ep-price">🍪 3 크래커</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 4화 -->
+                <a href="https://share.crack.wrtn.ai/98rqzv" target="_blank" class="episode-item">
+                    <div class="ep-thumbnail">
+                        <img src="https://b2m.ssina.uk/b4.webp" alt="4화 썸네일">
+                    </div>
+                    <div class="ep-info">
+                        <div class="ep-title">4화. 무너진 경계</div>
+                        <div class="ep-meta">
+                            <span class="ep-date">2026.07.21</span>
+                            <span class="ep-price">🍪 3 크래커</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 5화 -->
+                <a href="https://share.crack.wrtn.ai/98rqzv" target="_blank" class="episode-item">
+                    <div class="ep-thumbnail">
+                        <div class="ep-status" style="border-color: #EF4444; color: #EF4444;">19+</div>
+                        <img src="https://b2m.ssina.uk/b10.webp" alt="5화 썸네일">
+                    </div>
+                    <div class="ep-info">
+                        <div class="ep-title">5화. 은밀한 지배 (19)</div>
+                        <div class="ep-meta">
+                            <span class="ep-date">2026.07.28</span>
+                            <span class="ep-price">🍪 3 크래커</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 6화 -->
+                <a href="https://share.crack.wrtn.ai/98rqzv" target="_blank" class="episode-item">
+                    <div class="ep-thumbnail">
+                        <div class="ep-status" style="background: var(--brand-color); color: white;">UP</div>
+                        <img src="https://b2m.ssina.uk/a12.webp" alt="6화 썸네일">
+                    </div>
+                    <div class="ep-info">
+                        <div class="ep-title">6화. 완벽한 소유 (19)</div>
+                        <div class="ep-meta">
+                            <span class="ep-date">2026.08.04</span>
+                            <span class="ep-price">🍪 3 크래커</span>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+
+        <!-- 2. 작품소개 탭 콘텐츠 -->
+        <div id="infoContent" class="tab-content">
+            <div class="detail-info">
+                
+                <h3>📖 세계관 및 배경 설정</h3>
+                <ul class="info-list">
+                    <li><strong>배경:</strong> 2026년, 현대 대한민국</li>
+                    <li><strong>특수 설정:</strong> 동성 간의 결혼이 합법적으로 인정되며, 남성 임신이 가능한 세계관.</li>
+                </ul>
+
+                <h3>📚 작품 줄거리</h3>
+                <h4>[원작 📖 &lt;내 주인님의 주인님&gt;]</h4>
+                <p>
+                    최상위층에서 태어나 사랑이라는 감정을 모른 채 BDSM만을 즐기던 통제광 '주인님' 천해일. 그의 앞에 나타난 순진하고 멍청해 보이는 유도 국가대표 이영태. 두 사람은 서로의 진짜 감정을 숨긴 채 아슬아슬한 파트너 관계를 맺으며 깊은 사랑에 빠진다.<br><br>
+                    하지만 해일을 지독하게 짝사랑하던 악역 조연의 계략으로 모든 것이 파국으로 치닫는다. 약에 취해 강제로 하룻밤을 보낸 해일은 '거짓 임신'에 속아 억지 결혼을 하게 되고, 영태는 해일의 결혼식 날 악역의 함정에 빠져 목숨을 잃을 뻔한다. 해일이 미리 안배해 둔 사람들 덕에 영태는 간신히 살아남지만, 해일의 결혼 사실에 절망하며 그를 멀리하게 된다.<br><br>
+                    결국 모든 진실(거짓 임신과 영태의 암살 시도)을 알게 된 해일이 악역 조연을 똑같이 끔찍한 방법으로 처단하고, 오해를 푼 영태와 진정한 행복을 맞이하는 피폐 복수극이자 구원 서사.
+                </p>
+
+                <h4>[빙의물 시점 🎬]</h4>
+                <p>
+                    문제는… 내가 하필이면 그 사상 최악의 쓰레기 악역 조연에 빙의해버렸다는 것이다!<br>
+                    이미 약을 먹여 해일과 하룻밤을 보내고, <strong>"임신했어요"</strong>라는 새빨간 거짓말로 억지 결혼까지 이뤄낸 최악의 상황.<br><br>
+                    원작대로라면 조만간 거짓 임신이 들통나고 영태를 해치려 한 죄로 해일에게 비참하게 살해당할 운명이다. 나를 벌레 보듯 혐오하는 집착광공 남편과, 내 앞에서는 가녀린 척하며 뒤로는 교묘하게 나를 함정에 빠뜨리는 영악한 계략수 사이에서… 과연 나는 사망 엔딩을 피하고 무사히 이혼 도장을 찍을 수 있을까?!
+                </p>
+
+                <h3>👥 주요 캐릭터 소개</h3>
+                
+                <!-- 천해일 캐릭터 카드 -->
+                <div class="character-card">
+                    <h4>🖤 천해일 (공 / 1988년 11월 4일생)</h4>
+                    <div class="character-profile">
+                        <img src="https://b2m.ssina.uk/a3.webp" alt="천해일" class="character-img" onclick="openModal(this.src)">
+                        <div class="character-details">
+                            <ul class="info-list">
+                                <li><strong>거주지:</strong> 서울 강남 초고가 펜트하우스 (한강 조망, 150평대 복층구조, 방음 완벽한 BDSM룸 완비)</li>
+                                <li><strong>신체/외형:</strong> 194cm. 검은 머리카락, 갈색 눈동자. 타인을 압도하는 피지컬을 가진 서늘한 미인상. 언제나 검은 정장 풀세팅을 유지하며, BDSM 플레이 시에만 시작의 의미로 검은 장갑을 낀다.</li>
+                                <li><strong>직업:</strong> 대한민국 재계 5위 청호그룹 전략기획실 부사장 (COO)</li>
+                                <li><strong>성향:</strong> 집착광공, 계략공 / BDSM 도미넌트</li>
+                                <li><strong>특징:</strong> 나긋하고 다정한 말투로 숨 쉬듯 가스라이팅을 주도하는 냉혈한. 대외적인 결혼 반지(다이아 링)를 끼고 있지만, 옷 안쪽에는 아무에게도 보여주지 않는 영태와의 커플링을 은목걸이에 걸어 품고 다닌다. 나(유저)를 철저히 멍청한 아이 취급하며 경멸하지만, 영태 앞에서는 한없이 포용력 넓은 '좋은 형'이자 완벽한 '주인님'으로 군림한다.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 이영태 캐릭터 카드 -->
+                <div class="character-card">
+                    <h4>🤍 이영태 (수 / 1995년 4월 22일생)</h4>
+                    <div class="character-profile">
+                        <img src="https://b2m.ssina.uk/b3.webp" alt="이영태" class="character-img" onclick="openModal(this.src)">
+                        <div class="character-details">
+                            <ul class="info-list">
+                                <li><strong>거주지:</strong> 인천 바닷가 근처 아파트 (자가, 15평대)</li>
+                                <li><strong>신체/외형:</strong> 186cm. 갈색 머리카락, 갈색 눈동자. 단단하게 잡힌 근육질 몸매와 다크서클이 낀 날카로운 눈매의 양아치상 미남.</li>
+                                <li><strong>직업:</strong> 대한민국 유도 국가대표 베테랑 에이스</li>
+                                <li><strong>성향:</strong> 계략수, 여우수 / BDSM 서브미시브</li>
+                                <li><strong>특징:</strong> 활기차고 낙천적인 분위기 메이커. 하지만 천해일 앞에서만큼은 완벽하게 수동적인 존재가 된다. 나(유저) 앞에서는 순진한 척, 가녀린 척 교묘하게 비꼬며 엿을 먹이고, 해일 앞에서는 스스로 자해를 유도해 나를 가해자로 몰아가는 무서운 계략수. 나에게 관계를 들킬까 두려워하면서도 끝내 그를 밀어내지 못한다.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 지아람 캐릭터 카드 -->
+                <div class="character-card">
+                    <h4>💋 지아람 (조연 / 1995년 3월 19일생)</h4>
+                    <div class="character-profile">
+                        <div class="character-details">
+                            <ul class="info-list">
+                                <li><strong>신체/외형:</strong> 165cm. 차분하고 나긋한 인상.</li>
+                                <li><strong>직업:</strong> 천해일의 전담 비서이자 내연녀 ?</li>
+                                <li><strong>특징:</strong> 천해일과 어릴 때부터 알고 지내 사적인 자리에서는 할 말 다 하는 최측근. 나(유저)를 엿 먹이기 위해 해일의 묵인하에 얄밉게 속을 뒤집어 놓는 인물.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- HTML5 오디오 태그 (BGM 소스 업데이트됨) -->
+    <audio id="bgmAudio" loop>
+        <source src="https://and.ssina.uk/Good%20boy.wav" type="audio/wav">
+    </audio>
+
+    <!-- 최하단 플로팅 BGM 자체 플레이어 -->
+    <div class="floating-bgm-bar">
+        <div class="bgm-info">
+            <div class="bgm-icon">🎵</div>
+            <div class="bgm-text">
+                <div class="bgm-title">천해일 테마곡 (BGM)</div>
+                <div class="bgm-artist">음악과 함께 작품 감상하기</div>
+            </div>
+        </div>
+        <!-- 자체 재생 버튼 스크립트 연결 -->
+        <button id="bgmPlayBtn" class="bgm-play-btn" onclick="toggleBgm()">
+            ▶ 재생
+        </button>
+    </div>
+
+    <!-- 이미지 확대 모달 영역 -->
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="modalImg">
+    </div>
+
+    <!-- 스크립트 모음 -->
+    <script>
+        // 1. 하트 토글 스크립트
+        function toggleLike() {
+            const btn = document.getElementById('likeBtn');
+            const icon = document.getElementById('heartIcon');
+            
+            btn.classList.toggle('liked');
+            if (btn.classList.contains('liked')) {
+                icon.innerText = '♥';
+            } else {
+                icon.innerText = '♡';
+            }
+        }
+
+        // 2. 탭 전환 스크립트
+        function switchTab(tabName) {
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            if(tabName === 'episodes') {
+                tabs[0].classList.add('active');
+                document.getElementById('episodesContent').classList.add('active');
+            } else {
+                tabs[1].classList.add('active');
+                document.getElementById('infoContent').classList.add('active');
+            }
+        }
+
+        // 3. 이미지 모달(크게 보기) 스크립트
+        function openModal(imgSrc) {
+            const modal = document.getElementById("imageModal");
+            const modalImg = document.getElementById("modalImg");
+            
+            modal.style.display = "block";
+            modalImg.src = imgSrc;
+            
+            // 모달 열릴 때 스크롤 방지
+            document.body.style.overflow = "hidden";
+        }
+
+        function closeModal() {
+            const modal = document.getElementById("imageModal");
+            modal.style.display = "none";
+            
+            // 스크롤 방지 해제
+            document.body.style.overflow = "auto";
+        }
+
+        // 4. BGM 플레이어 재생/일시정지 스크립트
+        function toggleBgm() {
+            const audio = document.getElementById('bgmAudio');
+            const btn = document.getElementById('bgmPlayBtn');
+
+            if (audio.paused) {
+                audio.play();
+                btn.innerHTML = '⏸ 일시정지';
+                btn.style.color = 'var(--brand-color)';
+            } else {
+                audio.pause();
+                btn.innerHTML = '▶ 재생';
+                btn.style.color = 'var(--text-main)';
+            }
+        }
+    </script>
+</body>
+</html>
